@@ -113,14 +113,28 @@
             text-align: left;
         }
         th.section-header {
-            background: #e8f4f8;
-            font-size: 11px;
-            padding: 6px 8px;
-            font-weight: 600;
+            font-size: 12px;
+            padding: 8px 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        /* Farben für Section Header */
+        th.section-header:nth-child(2) {
+            background: #d6e9f5;
             border-left: 3px solid #4A90E2;
         }
-        th.section-header:first-child {
-            border-left: none;
+        th.section-header:nth-child(3) {
+            background: #ffe4cc;
+            border-left: 3px solid #E67E22;
+        }
+        th.section-header:nth-child(4) {
+            background: #d4f1e8;
+            border-left: 3px solid #27ae60;
+        }
+        th.section-header:nth-child(5) {
+            background: #e8dbed;
+            border-left: 3px solid #8e44ad;
         }
         td {
             padding: 10px 8px;
@@ -131,43 +145,96 @@
             text-align: left;
             font-weight: 600;
         }
-        /* Visuelle Trennung zwischen Hauptbereichen */
-        td.col-perCapita:first-of-type,
-        th.col-perCapita:first-of-type {
+        /* Visuelle Trennung zwischen Hauptbereichen - für alle Zeilen inkl. Header */
+        /* Spalte 2: erste Spalte "Absolute Werte" (gilt für tbody und thead Zeile 2) */
+        td:nth-child(2),
+        thead tr:nth-child(2) th:nth-child(1) {
             border-left: 3px solid #4A90E2;
         }
-        td.col-relative:first-of-type,
-        th.col-relative:first-of-type {
+        /* Spalte 6: erste Spalte "Pro-Kopf Nominal" (5. th in Zeile 2, da Jahr nicht mitgezählt) */
+        td:nth-child(6),
+        thead tr:nth-child(2) th:nth-child(5) {
+            border-left: 3px solid #E67E22;
+        }
+        /* Spalte 10: erste Spalte "Indices" (9. th in Zeile 2) */
+        td:nth-child(10),
+        thead tr:nth-child(2) th:nth-child(9) {
+            border-left: 3px solid #27ae60;
+        }
+        /* Spalte 14: erste Spalte "Pro-Kopf Real" (13. th in Zeile 2) */
+        td:nth-child(14),
+        thead tr:nth-child(2) th:nth-child(13) {
+            border-left: 3px solid #8e44ad;
+        }
+        /* Erste Header-Zeile (colspan) */
+        thead tr:nth-child(1) th:nth-child(2) {
             border-left: 3px solid #4A90E2;
         }
-        /* Letzte Spalte Real-Werte auch abgrenzen */
-        td:nth-child(12),
-        th:nth-child(12) {
-            border-left: 3px solid #4A90E2;
+        thead tr:nth-child(1) th:nth-child(3) {
+            border-left: 3px solid #E67E22;
         }
+        thead tr:nth-child(1) th:nth-child(4) {
+            border-left: 3px solid #27ae60;
+        }
+        thead tr:nth-child(1) th:nth-child(5) {
+            border-left: 3px solid #8e44ad;
+        }
+
         /* Unterschiedliche Hintergrundfarben für Bereiche */
-        .col-absolute {
-            background-color: #fafbfc;
+        /* Absolute Werte: Spalten 2-5 */
+        td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5) {
+            background-color: #f8f9fa;
         }
-        .col-perCapita {
-            background-color: #f0f8ff;
+        th.col-absolute {
+            background-color: #e3ecf2;
         }
-        .col-relative {
-            background-color: #fff9f0;
+        /* Pro-Kopf Nominal: Spalten 6-9 */
+        td:nth-child(6), td:nth-child(7), td:nth-child(8), td:nth-child(9) {
+            background-color: #fff4e6;
         }
-        tr:hover .col-absolute,
-        tr:hover .col-perCapita,
-        tr:hover .col-relative {
-            background-color: #f0f0f0;
+        th.col-perCapita {
+            background-color: #ffe4cc;
         }
-        .highlight-row .col-absolute {
+        /* Indices: Spalten 10-13 */
+        td:nth-child(10), td:nth-child(11), td:nth-child(12), td:nth-child(13) {
+            background-color: #e8f8f5;
+        }
+        th.col-relative {
+            background-color: #d4f1e8;
+        }
+        /* Pro-Kopf Real: Spalten 14-16 */
+        td:nth-child(14), td:nth-child(15), td:nth-child(16) {
+            background-color: #f4ecf7;
+        }
+        th.col-real {
+            background-color: #e8dbed;
+        }
+
+        /* Hover-Effekt für gesamte Zeile */
+        tr:hover td {
+            filter: brightness(0.95);
+        }
+
+        /* Highlight-Zeilen (1991, 2000, 2010, 2020, 2024) */
+        .highlight-row td:nth-child(2), .highlight-row td:nth-child(3),
+        .highlight-row td:nth-child(4), .highlight-row td:nth-child(5) {
             background-color: #fff9e6;
+            font-weight: 600;
         }
-        .highlight-row .col-perCapita {
-            background-color: #fffaed;
+        .highlight-row td:nth-child(6), .highlight-row td:nth-child(7),
+        .highlight-row td:nth-child(8), .highlight-row td:nth-child(9) {
+            background-color: #ffe8cc;
+            font-weight: 600;
         }
-        .highlight-row .col-relative {
-            background-color: #fff5e6;
+        .highlight-row td:nth-child(10), .highlight-row td:nth-child(11),
+        .highlight-row td:nth-child(12), .highlight-row td:nth-child(13) {
+            background-color: #d4f1e8;
+            font-weight: 600;
+        }
+        .highlight-row td:nth-child(14), .highlight-row td:nth-child(15),
+        .highlight-row td:nth-child(16) {
+            background-color: #e8dbed;
+            font-weight: 600;
         }
         tr:hover {
             background-color: #f9f9f9;
@@ -288,9 +355,9 @@
                         <th class="col-relative">Schulden p.K.<br>Index</th>
                         <th class="col-relative">Wachstum<br>seit 1991</th>
                         <!-- Real in 1991er Euro -->
-                        <th class="col-relative">BIP<br>(€)</th>
-                        <th class="col-relative">Steuern<br>(€)</th>
-                        <th class="col-relative">Schulden<br>(€)</th>
+                        <th class="col-real">BIP<br>(€)</th>
+                        <th class="col-real">Steuern<br>(€)</th>
+                        <th class="col-real">Schulden<br>(€)</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -524,9 +591,9 @@
                         ${row.growthRate > 0 ? '+' : ''}${row.growthRate.toFixed(1)}%
                     </td>
                     <!-- Real in 1991er Euro -->
-                    <td class="col-relative">${Math.round(row.bipPerCapitaReal).toLocaleString('de-DE')}</td>
-                    <td class="col-relative">${Math.round(row.taxPerCapitaReal).toLocaleString('de-DE')}</td>
-                    <td class="col-relative">${Math.round(row.debtPerCapitaReal).toLocaleString('de-DE')}</td>
+                    <td class="col-real">${Math.round(row.bipPerCapitaReal).toLocaleString('de-DE')}</td>
+                    <td class="col-real">${Math.round(row.taxPerCapitaReal).toLocaleString('de-DE')}</td>
+                    <td class="col-real">${Math.round(row.debtPerCapitaReal).toLocaleString('de-DE')}</td>
                 `;
                 
                 tbody.appendChild(tr);
@@ -536,15 +603,15 @@
         function toggleView() {
             const mode = document.getElementById('viewMode').value;
             const table = document.getElementById('dataTable');
-            
+
             // Alle Spalten erst mal anzeigen
-            table.querySelectorAll('.col-absolute, .col-perCapita, .col-relative').forEach(el => {
+            table.querySelectorAll('.col-absolute, .col-perCapita, .col-relative, .col-real').forEach(el => {
                 el.style.display = '';
             });
-            
+
             // Je nach Modus Spalten ausblenden
             if (mode === 'absolute') {
-                table.querySelectorAll('.col-relative, .col-perCapita').forEach(el => {
+                table.querySelectorAll('.col-relative, .col-real, .col-perCapita').forEach(el => {
                     el.style.display = 'none';
                 });
             } else if (mode === 'relative') {
