@@ -117,6 +117,10 @@
             font-size: 11px;
             padding: 6px 8px;
             font-weight: 600;
+            border-left: 3px solid #4A90E2;
+        }
+        th.section-header:first-child {
+            border-left: none;
         }
         td {
             padding: 10px 8px;
@@ -126,6 +130,44 @@
         td:first-child {
             text-align: left;
             font-weight: 600;
+        }
+        /* Visuelle Trennung zwischen Hauptbereichen */
+        td.col-perCapita:first-of-type,
+        th.col-perCapita:first-of-type {
+            border-left: 3px solid #4A90E2;
+        }
+        td.col-relative:first-of-type,
+        th.col-relative:first-of-type {
+            border-left: 3px solid #4A90E2;
+        }
+        /* Letzte Spalte Real-Werte auch abgrenzen */
+        td:nth-child(12),
+        th:nth-child(12) {
+            border-left: 3px solid #4A90E2;
+        }
+        /* Unterschiedliche Hintergrundfarben für Bereiche */
+        .col-absolute {
+            background-color: #fafbfc;
+        }
+        .col-perCapita {
+            background-color: #f0f8ff;
+        }
+        .col-relative {
+            background-color: #fff9f0;
+        }
+        tr:hover .col-absolute,
+        tr:hover .col-perCapita,
+        tr:hover .col-relative {
+            background-color: #f0f0f0;
+        }
+        .highlight-row .col-absolute {
+            background-color: #fff9e6;
+        }
+        .highlight-row .col-perCapita {
+            background-color: #fffaed;
+        }
+        .highlight-row .col-relative {
+            background-color: #fff5e6;
         }
         tr:hover {
             background-color: #f9f9f9;
