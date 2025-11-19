@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutscher Verteidigungshaushalt 2005-2024</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .chart-container {
+            position: relative;
+            height: 500px;
+            margin-bottom: 30px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .stat-change {
+            font-size: 14px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+        .legend-box {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .source {
+            text-align: center;
+            font-size: 11px;
+            color: #718096;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Deutscher Verteidigungshaushalt 2005-2024</h1>
+        <p class="subtitle">Entwicklung der nominalen und inflationsbereinigten Ausgaben</p>
+        
+        <div class="chart-container">
+            <canvas id="defenseChart"></canvas>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Nominaler Anstieg 2005-2024</div>
+                <div class="stat-value">+118%</div>
+                <div class="stat-change">von 23,9 auf 52,0 Mrd. €</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Realer Anstieg 2005-2024</div>
+                <div class="stat-value">+49%</div>
+                <div class="stat-change">von 34,9 auf 52,0 Mrd. €</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Kumulierte Inflation</div>
+                <div class="stat-value">46%</div>
+                <div class="stat-change">VPI: 81,7 → 119,3</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Mit Sondervermögen 2024</div>
+                <div class="stat-value">~72 Mrd. €</div>
+                <div class="stat-change">+20 Mrd. € Sondervermögen</div>
+            </div>
+        </div>
+        
+        <div class="legend-box">
+            <strong>Hinweise zur Interpretation:</strong><br>
+            • <strong>Nominale Werte:</strong> Tatsächliche Haushaltsansätze des jeweiligen Jahres (Einzelplan 14)<br>
+            • <strong>Reale Werte:</strong> Inflationsbereinigte Werte in Preisen von 2024 (VPI 2020=100)<br>
+            • <strong>Sondervermögen:</strong> Die 100 Mrd. € Sondervermögen Bundeswehr sind NICHT in diesen Zahlen enthalten<br>
+            • <strong>Zeitenwende:</strong> Der deutliche reale Anstieg beginnt erst 2017, nicht 2022
+        </div>
+        
+        <p class="source">Datenquellen: Bundesministerium der Finanzen, Deutscher Bundestag, Statistisches Bundesamt (VPI)</p>
+    </div>
+
+    <script>
+        // Daten
+        const years = ['2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', 
+                      '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+        
+        const nominalData = [23.9, 24.0, 24.7, 29.3, 29.6, 30.0, 30.3, 31.9, 33.3, 32.4,
+                            33.0, 34.3, 37.0, 38.5, 43.2, 45.7, 46.9, 50.4, 50.1, 52.0];
+        
+        const realData = [34.9, 34.6, 34.9, 40.2, 40.6, 40.6, 40.2, 41.5, 42.7, 41.2,
+                         41.7, 43.1, 45.7, 46.7, 51.7, 54.5, 54.3, 54.6, 51.2, 52.0];
+
+        // Chart-Konfiguration
+        const ctx = document.getElementById('defenseChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Nominale Ausgaben',
+                        data: nominalData,
+                        borderColor: '#764ba2',
+                        backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#764ba2',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    },
+                    {
+                        label: 'Reale Ausgaben (Preise 2024)',
+                        data: realData,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        borderDash: [5, 5],
+                        tension: 0.2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#667eea',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14
+                            },
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: {
+                            size: 14
+                        },
+                        bodyFont: {
+                            size: 13
+                        },
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + ' Mrd. €';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                size: 11
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Jahr',
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    y: {
+                        display: true,
+                        beginAtZero: true,
+                        max: 60,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: {
+                                size: 11
+                            },
+                            callback: function(value) {
+                                return value + ' Mrd. €';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Ausgaben in Milliarden Euro',
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Füge Annotations für wichtige Ereignisse hinzu
+        chart.options.plugins.annotation = {
+            annotations: {
+                trendwende: {
+                    type: 'line',
+                    xMin: '2015',
+                    xMax: '2015',
+                    borderColor: 'rgba(255, 99, 132, 0.5)',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    label: {
+                        content: 'Trendwende Finanzen',
+                        enabled: true,
+                        position: 'start'
+                    }
+                },
+                zeitenwende: {
+                    type: 'line',
+                    xMin: '2022',
+                    xMax: '2022',
+                    borderColor: 'rgba(255, 99, 132, 0.5)',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    label: {
+                        content: 'Zeitenwende',
+                        enabled: true,
+                        position: 'start'
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>German Government Data - Visualizations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .card a:hover {
+            background: #764ba2;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #e9ecef;
+            color: #495057;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-top: 5px;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>German Government Data</h1>
+            <p>Visualizations and analysis of economy, defense, and public finances</p>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2>GDP, Taxes & Debt</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Table View</h3>
+                        <span class="badge">Table</span>
+                        <p>Detailed overview of GDP, tax revenue and public debt</p>
+                        <a href="visualizations/gdp/gdp_tax_debt_table.html">View Table →</a>
+                    </div>
+                    <div class="card">
+                        <h3>Comparative Analysis</h3>
+                        <span class="badge">Chart</span>
+                        <p>Comparative visualization of economic indicators</p>
+                        <a href="visualizations/gdp/gdp_tax_debt_comparison.html">View Comparison →</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Defense Budget</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Chart</h3>
+                        <span class="badge">Visualization</span>
+                        <p>Graphical representation of defense budget over the years</p>
+                        <a href="visualizations/defense/defense_budget_chart.html">View Chart →</a>
+                    </div>
+                    <div class="card">
+                        <h3>Table View</h3>
+                        <span class="badge">Table</span>
+                        <p>Detailed figures on defense budget</p>
+                        <a href="visualizations/defense/defense_budget_table.html">View Table →</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>National Accounts</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Absolute Values</h3>
+                        <span class="badge">Overview</span>
+                        <p>Economic indicators in absolute values</p>
+                        <a href="visualizations/national_accounts/national_accounts_absolute_values.html">View Data →</a>
+                    </div>
+                    <div class="card">
+                        <h3>Public vs. Private Investments</h3>
+                        <span class="badge">Comparison</span>
+                        <p>Comparison of public and private investment activity</p>
+                        <a href="visualizations/national_accounts/national_accounts_public_private_investments.html">View Comparison →</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>German Government Data Visualizations | Data Source: Federal Government & Federal Statistical Office</p>
+        </footer>
+    </div>
+</body>
+</html>

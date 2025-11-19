@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIP, Steueraufkommen und Schuldenstand pro Kopf in Deutschland (1990-2024)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+        .combined-chart {
+            position: relative;
+            height: 500px;
+            margin-bottom: 30px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        .info-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #667eea;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .info-box p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .methodology {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        @media (max-width: 768px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BIP, Steueraufkommen und Schuldenstand pro Kopf in Deutschland</h1>
+        <div class="subtitle">Real (preisbereinigt) - Index 1990 = 100</div>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button onclick="window.location.href='bip_steuer_schulden_tabelle.html'" 
+                    style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                           color: white; border: none; border-radius: 5px; cursor: pointer; 
+                           font-size: 14px; font-weight: bold; transition: transform 0.2s;"
+                    onmouseover="this.style.transform='translateY(-2px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                📊 Zur detaillierten Tabelle mit allen Zahlen →
+            </button>
+        </div>
+        
+        <div class="combined-chart">
+            <canvas id="combinedChart"></canvas>
+        </div>
+        
+        <div class="chart-grid">
+            <div class="chart-container">
+                <canvas id="bipChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="steuerChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="bipGrowth">+47%</div>
+                <div class="stat-label">BIP pro Kopf Wachstum seit 1990 (real)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="taxGrowth">+57%</div>
+                <div class="stat-label">Steuern pro Kopf Wachstum seit 1990 (real)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="realBipPerCapita">...</div>
+                <div class="stat-label">BIP pro Kopf 2024 (real, in 1990er Euro)</div>
+                <div class="stat-value" id="currentBip" style="font-size: 18px; margin-top: 10px;">51.555 €</div>
+                <div class="stat-label" style="font-size: 11px;">nominal</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="realTaxPerCapita">...</div>
+                <div class="stat-label">Steuern pro Kopf 2024 (real, in 1990er Euro)</div>
+                <div class="stat-value" id="currentTax" style="font-size: 18px; margin-top: 10px;">11.340 €</div>
+                <div class="stat-label" style="font-size: 11px;">nominal</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="taxQuote1990">21,5%</div>
+                <div class="stat-label">Steuerquote 1990</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="taxQuote2024">22,0%</div>
+                <div class="stat-label">Steuerquote 2024</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="debtGrowth">...</div>
+                <div class="stat-label">Schulden pro Kopf Wachstum seit 1990 (real)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="realDebtPerCapita">...</div>
+                <div class="stat-label">Schulden pro Kopf 2024 (real, in 1990er Euro)</div>
+                <div class="stat-value" id="currentDebt" style="font-size: 18px; margin-top: 10px;">30.000 €</div>
+                <div class="stat-label" style="font-size: 11px;">nominal</div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>Kernaussagen der Analyse</h3>
+            <p><strong>Deutliche Divergenz:</strong> Das reale BIP pro Kopf ist seit 1990 um rund 47% gestiegen, während das reale Steueraufkommen pro Kopf um rund 51% zunahm - eine stärkere Zunahme der realen Steuerlast.</p>
+            <p><strong>Moderater Schuldenanstieg real:</strong> Die realen Schulden pro Kopf sind seit 1990 um gut 100% gestiegen (inflationsbereinigt), also in etwa doppelt so hoch wie damals. Nominal stiegen sie von etwa 6.700 € (1990) auf rund 30.000 € pro Kopf (2024).</p>
+            <p><strong>Aktuelle Rezession:</strong> 2023 (-0,3%) und 2024 (-0,2%) schrumpfte die Wirtschaft real, während die Steuereinnahmen weiter stiegen.</p>
+            <p><strong>Steuerquote:</strong> Stieg von 21,5% (1990) auf 22,0% (2024) - ein Anstieg um 0,5 Prozentpunkte.</p>
+            <p><strong>Fazit:</strong> Der Staat nimmt heute pro Bürger real rund 51% mehr Steuern ein, während die Wirtschaftsleistung pro Kopf nur um etwa 47% gewachsen ist. Die realen Schulden pro Kopf sind um gut 100% gestiegen. Trotz des moderaten realen Anstiegs bedeuten die nominalen 30.000 € pro Kopf eine erhebliche Belastung für zukünftige Generationen.</p>
+        </div>
+        
+        <div class="methodology">
+            <strong>Methodische Hinweise:</strong> Alle drei Zeitreihen (BIP, Steuern und Schulden) wurden mit den offiziellen realen BIP-Wachstumsraten deflationiert (einheitlicher Deflator). Die Steuerquote wurde aus den nominalen BIP- und Steueraufkommensdaten berechnet. Datenquellen: Statistisches Bundesamt, BMF.
+        </div>
+    </div>
+
+    <script>
+        // Nominale BIP-Werte in Mrd. Euro (aus Quellen)
+        const nominalBIP = [
+            {year: 1990, bip: 1306.7},  // Geschätzt basierend auf Wachstumsraten
+            {year: 1991, bip: 1535},
+            {year: 1992, bip: 1647},
+            {year: 1993, bip: 1694},
+            {year: 1994, bip: 1781},
+            {year: 1995, bip: 1849},
+            {year: 1996, bip: 1876},
+            {year: 1997, bip: 1916},
+            {year: 1998, bip: 1966},
+            {year: 1999, bip: 2012},
+            {year: 2000, bip: 2063},
+            {year: 2001, bip: 2113},
+            {year: 2002, bip: 2145},
+            {year: 2003, bip: 2164},
+            {year: 2004, bip: 2211},
+            {year: 2005, bip: 2243},
+            {year: 2006, bip: 2325},
+            {year: 2007, bip: 2432},
+            {year: 2008, bip: 2473},
+            {year: 2009, bip: 2375},
+            {year: 2010, bip: 2489},
+            {year: 2011, bip: 2593},
+            {year: 2012, bip: 2666},
+            {year: 2013, bip: 2745},
+            {year: 2014, bip: 2833},
+            {year: 2015, bip: 2937},
+            {year: 2016, bip: 3048},
+            {year: 2017, bip: 3144},
+            {year: 2018, bip: 3268},
+            {year: 2019, bip: 3361},
+            {year: 2020, bip: 3338},
+            {year: 2021, bip: 3570},
+            {year: 2022, bip: 3868},
+            {year: 2023, bip: 4190},
+            {year: 2024, bip: 4310}
+        ];
+
+        // Steueraufkommen, Bevölkerung und Schuldenstand
+        const historicalData = [
+            {year: 1990, tax: 281, population: 79.8, debt: 538},
+            {year: 1991, tax: 338, population: 80.3, debt: 600},
+            {year: 1992, tax: 374, population: 80.6, debt: 686},
+            {year: 1993, tax: 383, population: 81.2, debt: 770},
+            {year: 1994, tax: 402, population: 81.4, debt: 848},
+            {year: 1995, tax: 416, population: 81.7, debt: 1019},
+            {year: 1996, tax: 409, population: 81.9, debt: 1083},
+            {year: 1997, tax: 408, population: 82.1, debt: 1132},
+            {year: 1998, tax: 426, population: 82.0, debt: 1165},
+            {year: 1999, tax: 453, population: 82.2, debt: 1200},
+            {year: 2000, tax: 467, population: 82.3, debt: 1211},
+            {year: 2001, tax: 446, population: 82.4, debt: 1224},
+            {year: 2002, tax: 442, population: 82.5, debt: 1277},
+            {year: 2003, tax: 442, population: 82.5, debt: 1358},
+            {year: 2004, tax: 443, population: 82.5, debt: 1430},
+            {year: 2005, tax: 452, population: 82.4, debt: 1490},
+            {year: 2006, tax: 488, population: 82.3, debt: 1545},
+            {year: 2007, tax: 538, population: 82.2, debt: 1552},
+            {year: 2008, tax: 561, population: 82.0, debt: 1578},
+            {year: 2009, tax: 524, population: 81.8, debt: 1694},
+            {year: 2010, tax: 530, population: 81.8, debt: 2012},
+            {year: 2011, tax: 573, population: 80.3, debt: 2025},
+            {year: 2012, tax: 601, population: 80.5, debt: 2068},
+            {year: 2013, tax: 620, population: 80.8, debt: 2043},
+            {year: 2014, tax: 644, population: 81.2, debt: 2044},
+            {year: 2015, tax: 673, population: 82.2, debt: 2021},
+            {year: 2016, tax: 706, population: 82.5, debt: 2009},
+            {year: 2017, tax: 735, population: 82.8, debt: 1969},
+            {year: 2018, tax: 776, population: 83.0, debt: 1916},
+            {year: 2019, tax: 799, population: 83.2, debt: 1899},
+            {year: 2020, tax: 740, population: 83.2, debt: 2173},
+            {year: 2021, tax: 833, population: 83.2, debt: 2321},
+            {year: 2022, tax: 896, population: 84.4, debt: 2368},
+            {year: 2023, tax: 916, population: 84.5, debt: 2445},
+            {year: 2024, tax: 948, population: 83.6, debt: 2509}
+        ];
+
+        // Reale Wachstumsraten BIP
+        const realGrowthRates = [
+            0, 5.1, 1.9, -1.0, 2.4, 1.5, 0.8, 1.8, 2.0, 1.9,
+            2.9, 1.7, -0.2, -0.7, 1.2, 0.7, 3.8, 3.0, 1.0, -5.7,
+            4.2, 3.9, 0.4, 0.4, 2.2, 1.5, 2.2, 2.7, 1.0, 1.1,
+            -3.8, 3.2, 1.8, -0.3, -0.2
+        ];
+
+        // Berechnung der Indices
+        const years = [];
+        const realBipIndex = [];
+        const realBipPerCapitaIndex = [];
+        const realTaxIndex = [];
+        const realTaxPerCapitaIndex = [];
+        const taxQuotes = [];
+        const realDebtIndex = [];
+        const realDebtPerCapitaIndex = [];
+        
+        // Kumulativer BIP-Deflator aus realen Wachstumsraten
+        let bipRealIndex = 100;
+        
+        for (let i = 0; i < nominalBIP.length; i++) {
+            years.push(nominalBIP[i].year);
+            
+            // Realer BIP-Index (kumulativ)
+            if (i === 0) {
+                bipRealIndex = 100;
+            } else {
+                bipRealIndex = bipRealIndex * (1 + realGrowthRates[i] / 100);
+            }
+            realBipIndex.push(bipRealIndex);
+            
+            // Bevölkerungsindex
+            const populationIndex = (historicalData[i].population / historicalData[0].population) * 100;
+            
+            // BIP pro Kopf Index (real)
+            const bipPerCapitaIdx = (bipRealIndex / populationIndex) * 100;
+            realBipPerCapitaIndex.push(bipPerCapitaIdx);
+            
+            // Deflator berechnen (nominales BIP / reales BIP)
+            const deflator = nominalBIP[i].bip / (nominalBIP[0].bip * (bipRealIndex / 100));
+            
+            // Steueraufkommen real (mit BIP-Deflator)
+            const realTax = historicalData[i].tax / deflator;
+            const realTaxIdx = (realTax / historicalData[0].tax) * 100;
+            realTaxIndex.push(realTaxIdx);
+            
+            // Steueraufkommen pro Kopf Index (real)
+            const taxPerCapitaIdx = (realTaxIdx / populationIndex) * 100;
+            realTaxPerCapitaIndex.push(taxPerCapitaIdx);
+            
+            // Steuerquote (nominal)
+            const taxQuote = (historicalData[i].tax / nominalBIP[i].bip) * 100;
+            taxQuotes.push(taxQuote);
+            
+            // Schuldenstand pro Kopf nominal
+            const debtPerCapitaNominal = (historicalData[i].debt * 1000000000) / (historicalData[i].population * 1000000);
+            const debtPerCapitaNominal1990 = (historicalData[0].debt * 1000000000) / (historicalData[0].population * 1000000);
+            
+            // Schuldenstand pro Kopf real (deflationiert)
+            const realDebtPerCapita = debtPerCapitaNominal / deflator;
+            const realDebtPerCapita1990 = debtPerCapitaNominal1990; // 1990 ist Basisjahr, kein Deflator nötig
+            
+            // Schuldenstand pro Kopf Index (real)
+            const debtPerCapitaIdx = (realDebtPerCapita / realDebtPerCapita1990) * 100;
+            realDebtPerCapitaIndex.push(debtPerCapitaIdx);
+        }
+
+        // Charts erstellen
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.parsed.y.toFixed(1);
+                            return context.dataset.label + ': ' + value;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    min: 80,
+                    max: 300,
+                    title: {
+                        display: true,
+                        text: 'Index (1990 = 100)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Jahr'
+                    }
+                }
+            }
+        };
+
+        // Kombinierter Chart
+        const ctxCombined = document.getElementById('combinedChart').getContext('2d');
+        const combinedChart = new Chart(ctxCombined, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'BIP pro Kopf (real)',
+                        data: realBipPerCapitaIndex,
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.2
+                    },
+                    {
+                        label: 'Steueraufkommen pro Kopf (real)',
+                        data: realTaxPerCapitaIndex,
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.2
+                    },
+                    {
+                        label: 'Schuldenstand pro Kopf (real)',
+                        data: realDebtPerCapitaIndex,
+                        borderColor: '#9b59b6',
+                        backgroundColor: 'rgba(155, 89, 182, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.2
+                    }
+                ]
+            },
+            options: {
+                ...chartOptions,
+                plugins: {
+                    ...chartOptions.plugins,
+                    title: {
+                        display: true,
+                        text: 'Reale Entwicklung: BIP vs. Steuern vs. Schulden pro Kopf (einheitlich deflationiert)'
+                    }
+                }
+            }
+        });
+
+        // BIP Chart mit Steuerquote
+        const ctxBip = document.getElementById('bipChart').getContext('2d');
+        const bipChart = new Chart(ctxBip, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'BIP gesamt (real)',
+                        data: realBipIndex,
+                        borderColor: '#3498db',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'BIP pro Kopf (real)',
+                        data: realBipPerCapitaIndex,
+                        borderColor: '#2ecc71',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Steuerquote (%)',
+                        data: taxQuotes,
+                        borderColor: '#f39c12',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.2,
+                        borderDash: [5, 5],
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'BIP-Entwicklung und Steuerquote'
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        min: 80,
+                        max: 160,
+                        title: {
+                            display: true,
+                            text: 'Index (1990 = 100)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        min: 15,
+                        max: 25,
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Steuerquote (%)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Steuer und Schulden Chart
+        const ctxSteuer = document.getElementById('steuerChart').getContext('2d');
+        const steuerChart = new Chart(ctxSteuer, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Steueraufkommen pro Kopf (real)',
+                        data: realTaxPerCapitaIndex,
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Schuldenstand pro Kopf (real)',
+                        data: realDebtPerCapitaIndex,
+                        borderColor: '#9b59b6',
+                        backgroundColor: 'rgba(155, 89, 182, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.2,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Steueraufkommen und Schuldenstand pro Kopf (real)'
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        min: 80,
+                        max: 300,
+                        title: {
+                            display: true,
+                            text: 'Steuern-Index (1990 = 100)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        min: 80,
+                        max: 300,
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Schulden-Index (1990 = 100)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Jahr'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Statistiken aktualisieren
+        const bipGrowth = realBipPerCapitaIndex[realBipPerCapitaIndex.length - 1] - 100;
+        document.getElementById('bipGrowth').textContent = (bipGrowth > 0 ? '+' : '') + bipGrowth.toFixed(0) + '%';
+        
+        const taxGrowth = realTaxPerCapitaIndex[realTaxPerCapitaIndex.length - 1] - 100;
+        document.getElementById('taxGrowth').textContent = (taxGrowth > 0 ? '+' : '') + taxGrowth.toFixed(0) + '%';
+        
+        const debtGrowth = realDebtPerCapitaIndex[realDebtPerCapitaIndex.length - 1] - 100;
+        document.getElementById('debtGrowth').textContent = (debtGrowth > 0 ? '+' : '') + debtGrowth.toFixed(0) + '%';
+        
+        // Nominale Werte pro Kopf 2024
+        const bipPerCapita2024 = (nominalBIP[nominalBIP.length - 1].bip * 1000000000) / 
+                                 (historicalData[historicalData.length - 1].population * 1000000);
+        document.getElementById('currentBip').textContent = 
+            Math.round(bipPerCapita2024).toLocaleString('de-DE') + ' €';
+        
+        const taxPerCapita2024 = (historicalData[historicalData.length - 1].tax * 1000000000) / 
+                                 (historicalData[historicalData.length - 1].population * 1000000);
+        document.getElementById('currentTax').textContent = 
+            Math.round(taxPerCapita2024).toLocaleString('de-DE') + ' €';
+        
+        const debtPerCapita2024 = (historicalData[historicalData.length - 1].debt * 1000000000) / 
+                                  (historicalData[historicalData.length - 1].population * 1000000);
+        document.getElementById('currentDebt').textContent = 
+            Math.round(debtPerCapita2024).toLocaleString('de-DE') + ' €';
+        
+        // Berechne Reale Werte in 1990er Euro (konsistent mit Index-Methodik)
+        // Verwende die gleichen Index-Werte wie in den Charts
+        const bipPerCapita1990 = (nominalBIP[0].bip * 1000000000) / 
+                                 (historicalData[0].population * 1000000);
+        const taxPerCapita1990 = (historicalData[0].tax * 1000000000) / 
+                                 (historicalData[0].population * 1000000);
+        const debtPerCapita1990 = (historicalData[0].debt * 1000000000) / 
+                                  (historicalData[0].population * 1000000);
+        
+        // Real-Werte 2024 = Wert 1990 * (Index 2024 / 100)
+        // Dies entspricht der Deflationierung mit den realen BIP-Wachstumsraten
+        const bipPerCapita2024Real = bipPerCapita1990 * (realBipPerCapitaIndex[realBipPerCapitaIndex.length - 1] / 100);
+        const taxPerCapita2024Real = taxPerCapita1990 * (realTaxPerCapitaIndex[realTaxPerCapitaIndex.length - 1] / 100);
+        const debtPerCapita2024Real = debtPerCapita1990 * (realDebtPerCapitaIndex[realDebtPerCapitaIndex.length - 1] / 100);
+        
+        // Reale Werte anzeigen
+        document.getElementById('realBipPerCapita').textContent = 
+            Math.round(bipPerCapita2024Real).toLocaleString('de-DE') + ' €';
+        document.getElementById('realTaxPerCapita').textContent = 
+            Math.round(taxPerCapita2024Real).toLocaleString('de-DE') + ' €';
+        document.getElementById('realDebtPerCapita').textContent = 
+            Math.round(debtPerCapita2024Real).toLocaleString('de-DE') + ' €';
+        
+        document.getElementById('taxQuote1990').textContent = taxQuotes[0].toFixed(1) + '%';
+        document.getElementById('taxQuote2024').textContent = taxQuotes[taxQuotes.length - 1].toFixed(1) + '%';
+    </script>
+</body>
+</html>

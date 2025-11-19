@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git mv verteidigungshaushalt_chart.html verteidigungshaushalt_diagramm.html)",
+      "Bash(mv verteidigungshaushalt_chart.html verteidigungshaushalt_diagramm.html)",
+      "Bash(mkdir -p visualisierungen/bip)",
+      "Bash(mkdir -p visualisierungen/verteidigung)",
+      "Bash(mkdir -p visualisierungen/vgr)",
+      "Bash(mv bip_steuer_schulden_*.html visualisierungen/bip/)",
+      "Bash(mv verteidigungshaushalt_*.html visualisierungen/verteidigung/)",
+      "Bash(mv vgr_*.html visualisierungen/vgr/)",
+      "Bash(tree /F)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
