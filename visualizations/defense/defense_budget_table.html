@@ -165,7 +165,7 @@
                     <div class="summary-label">Kumulierte Inflation</div>
                     <div class="summary-value">+46,0%</div>
                     <div style="font-size: 13px; color: #718096; margin-top: 5px;">
-                        VPI: 81,7 → 119,3<br>
+                        VPI: 81,5 → 119,3<br>
                         Ø +2,0% pro Jahr
                     </div>
                 </div>
@@ -200,7 +200,7 @@
             <strong>📊 Methodische Hinweise:</strong><br>
             • <strong>Nominale Werte:</strong> Tatsächliche Haushaltsansätze des jeweiligen Jahres (Einzelplan 14)<br>
             • <strong>Reale Werte:</strong> Inflationsbereinigte Werte in Preisen von 2024, berechnet mit VPI (2020=100)<br>
-            • <strong>VPI:</strong> Verbraucherpreisindex des Statistischen Bundesamtes (Jahresdurchschnitt)<br>
+            • <strong>VPI:</strong> Verbraucherpreisindex des Statistischen Bundesamtes (Quelle: Destatis 61111-0001, Jahresdurchschnitt)<br>
             • <strong>Δ Vorjahr:</strong> Prozentuale Veränderung gegenüber dem Vorjahr<br>
             • <strong>Δ seit 2005:</strong> Kumulierte prozentuale Veränderung seit dem Basisjahr 2005<br>
             • <strong>Besonderheiten:</strong> 
@@ -218,20 +218,20 @@
 
     <script>
         // Daten
-        const years = ['2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', 
+        const years = ['2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014',
                       '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
-        
+
         const nominalData = [23.9, 24.0, 24.7, 29.3, 29.6, 30.0, 30.3, 31.9, 33.3, 32.4,
                             33.0, 34.3, 37.0, 38.5, 43.2, 45.7, 46.9, 50.4, 50.1, 52.0];
-        
-        const realData = [34.9, 34.6, 34.9, 40.2, 40.6, 40.6, 40.2, 41.5, 42.7, 41.2,
-                         41.7, 43.1, 45.7, 46.7, 51.7, 54.5, 54.3, 54.6, 51.2, 52.0];
-        
-        // VPI berechnen (abgeleitet aus nominal/real Verhältnis)
-        const vpiData = years.map((year, i) => {
-            // VPI 2024 = 119.3, daraus rückrechnen
-            const ratio = realData[i] / nominalData[i];
-            return (119.3 / ratio).toFixed(1);
+
+        // Offizielle VPI-Daten (Quelle: Destatis 61111-0001, Basis 2020=100)
+        const vpiData = [81.5, 82.8, 84.7, 86.9, 87.2, 88.1, 90.0, 91.7, 93.1, 94.0,
+                        94.5, 95.0, 96.4, 98.1, 99.5, 100.0, 103.1, 110.2, 116.7, 119.3];
+
+        // Reale Werte berechnen (in Preisen von 2024)
+        const vpi2024 = vpiData[vpiData.length - 1]; // 119.3
+        const realData = nominalData.map((nominal, i) => {
+            return nominal * (vpi2024 / vpiData[i]);
         });
 
         // Tabelle füllen

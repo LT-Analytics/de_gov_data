@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIP, Steueraufkommen und Schuldenstand pro Kopf in Deutschland (1990-2024)</title>
+    <title>BIP, Steueraufkommen und Schuldenstand pro Kopf in Deutschland (1991-2024)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -100,7 +100,7 @@
 <body>
     <div class="container">
         <h1>BIP, Steueraufkommen und Schuldenstand pro Kopf in Deutschland</h1>
-        <div class="subtitle">Real (preisbereinigt) - Index 1990 = 100</div>
+        <div class="subtitle">Real (preisbereinigt) - Index 1991 = 100</div>
         
         <div style="text-align: center; margin-bottom: 20px;">
             <button onclick="window.location.href='bip_steuer_schulden_tabelle.html'" 
@@ -129,27 +129,27 @@
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-value" id="bipGrowth">+47%</div>
-                <div class="stat-label">BIP pro Kopf Wachstum seit 1990 (real)</div>
+                <div class="stat-label">BIP pro Kopf Wachstum seit 1991 (real)</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="taxGrowth">+57%</div>
-                <div class="stat-label">Steuern pro Kopf Wachstum seit 1990 (real)</div>
+                <div class="stat-label">Steuern pro Kopf Wachstum seit 1991 (real)</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="realBipPerCapita">...</div>
-                <div class="stat-label">BIP pro Kopf 2024 (real, in 1990er Euro)</div>
+                <div class="stat-label">BIP pro Kopf 2024 (real, in 1991er Euro)</div>
                 <div class="stat-value" id="currentBip" style="font-size: 18px; margin-top: 10px;">51.555 €</div>
                 <div class="stat-label" style="font-size: 11px;">nominal</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="realTaxPerCapita">...</div>
-                <div class="stat-label">Steuern pro Kopf 2024 (real, in 1990er Euro)</div>
+                <div class="stat-label">Steuern pro Kopf 2024 (real, in 1991er Euro)</div>
                 <div class="stat-value" id="currentTax" style="font-size: 18px; margin-top: 10px;">11.340 €</div>
                 <div class="stat-label" style="font-size: 11px;">nominal</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="taxQuote1990">21,5%</div>
-                <div class="stat-label">Steuerquote 1990</div>
+                <div class="stat-value" id="taxQuote1991">21,2%</div>
+                <div class="stat-label">Steuerquote 1991</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="taxQuote2024">22,0%</div>
@@ -157,11 +157,11 @@
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="debtGrowth">...</div>
-                <div class="stat-label">Schulden pro Kopf Wachstum seit 1990 (real)</div>
+                <div class="stat-label">Schulden pro Kopf Wachstum seit 1991 (real)</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="realDebtPerCapita">...</div>
-                <div class="stat-label">Schulden pro Kopf 2024 (real, in 1990er Euro)</div>
+                <div class="stat-label">Schulden pro Kopf 2024 (real, in 1991er Euro)</div>
                 <div class="stat-value" id="currentDebt" style="font-size: 18px; margin-top: 10px;">30.000 €</div>
                 <div class="stat-label" style="font-size: 11px;">nominal</div>
             </div>
@@ -169,11 +169,11 @@
         
         <div class="info-box">
             <h3>Kernaussagen der Analyse</h3>
-            <p><strong>Deutliche Divergenz:</strong> Das reale BIP pro Kopf ist seit 1990 um rund 47% gestiegen, während das reale Steueraufkommen pro Kopf um rund 51% zunahm - eine stärkere Zunahme der realen Steuerlast.</p>
-            <p><strong>Moderater Schuldenanstieg real:</strong> Die realen Schulden pro Kopf sind seit 1990 um gut 100% gestiegen (inflationsbereinigt), also in etwa doppelt so hoch wie damals. Nominal stiegen sie von etwa 6.700 € (1990) auf rund 30.000 € pro Kopf (2024).</p>
+            <p><strong>Deutliche Divergenz:</strong> Das reale BIP pro Kopf ist seit 1991 um rund 40% gestiegen, während das reale Steueraufkommen pro Kopf um rund 44% zunahm - eine stärkere Zunahme der realen Steuerlast.</p>
+            <p><strong>Moderater Schuldenanstieg real:</strong> Die realen Schulden pro Kopf sind seit 1991 um gut 98% gestiegen (inflationsbereinigt), also in etwa doppelt so hoch wie damals. Nominal stiegen sie von etwa 7.500 € (1991) auf rund 30.000 € pro Kopf (2024).</p>
             <p><strong>Aktuelle Rezession:</strong> 2023 (-0,3%) und 2024 (-0,2%) schrumpfte die Wirtschaft real, während die Steuereinnahmen weiter stiegen.</p>
-            <p><strong>Steuerquote:</strong> Stieg von 21,5% (1990) auf 22,0% (2024) - ein Anstieg um 0,5 Prozentpunkte.</p>
-            <p><strong>Fazit:</strong> Der Staat nimmt heute pro Bürger real rund 51% mehr Steuern ein, während die Wirtschaftsleistung pro Kopf nur um etwa 47% gewachsen ist. Die realen Schulden pro Kopf sind um gut 100% gestiegen. Trotz des moderaten realen Anstiegs bedeuten die nominalen 30.000 € pro Kopf eine erhebliche Belastung für zukünftige Generationen.</p>
+            <p><strong>Steuerquote:</strong> Stieg von 21,2% (1991) auf 22,0% (2024) - ein Anstieg um 0,8 Prozentpunkte.</p>
+            <p><strong>Fazit:</strong> Der Staat nimmt heute pro Bürger real rund 44% mehr Steuern ein, während die Wirtschaftsleistung pro Kopf nur um etwa 40% gewachsen ist. Die realen Schulden pro Kopf sind um gut 98% gestiegen. Trotz des moderaten realen Anstiegs bedeuten die nominalen 30.000 € pro Kopf eine erhebliche Belastung für zukünftige Generationen.</p>
         </div>
         
         <div class="methodology">
@@ -182,48 +182,46 @@
     </div>
 
     <script>
-        // Nominale BIP-Werte in Mrd. Euro (aus Quellen)
+        // Nominale BIP-Werte in Mrd. Euro (Quelle: Statistisches Bundesamt, 81000-0001)
         const nominalBIP = [
-            {year: 1990, bip: 1306.7},  // Geschätzt basierend auf Wachstumsraten
-            {year: 1991, bip: 1535},
-            {year: 1992, bip: 1647},
-            {year: 1993, bip: 1694},
-            {year: 1994, bip: 1781},
-            {year: 1995, bip: 1849},
-            {year: 1996, bip: 1876},
-            {year: 1997, bip: 1916},
-            {year: 1998, bip: 1966},
-            {year: 1999, bip: 2012},
-            {year: 2000, bip: 2063},
-            {year: 2001, bip: 2113},
-            {year: 2002, bip: 2145},
-            {year: 2003, bip: 2164},
-            {year: 2004, bip: 2211},
-            {year: 2005, bip: 2243},
-            {year: 2006, bip: 2325},
-            {year: 2007, bip: 2432},
-            {year: 2008, bip: 2473},
-            {year: 2009, bip: 2375},
-            {year: 2010, bip: 2489},
-            {year: 2011, bip: 2593},
-            {year: 2012, bip: 2666},
-            {year: 2013, bip: 2745},
-            {year: 2014, bip: 2833},
-            {year: 2015, bip: 2937},
-            {year: 2016, bip: 3048},
-            {year: 2017, bip: 3144},
-            {year: 2018, bip: 3268},
-            {year: 2019, bip: 3361},
-            {year: 2020, bip: 3338},
-            {year: 2021, bip: 3570},
-            {year: 2022, bip: 3868},
-            {year: 2023, bip: 4190},
-            {year: 2024, bip: 4310}
+            {year: 1991, bip: 1591.61},
+            {year: 1992, bip: 1709.89},
+            {year: 1993, bip: 1757.34},
+            {year: 1994, bip: 1838.02},
+            {year: 1995, bip: 1899.93},
+            {year: 1996, bip: 1928.56},
+            {year: 1997, bip: 1967.18},
+            {year: 1998, bip: 2022.31},
+            {year: 1999, bip: 2077.24},
+            {year: 2000, bip: 2129.66},
+            {year: 2001, bip: 2195.53},
+            {year: 2002, bip: 2223.36},
+            {year: 2003, bip: 2240.81},
+            {year: 2004, bip: 2293.04},
+            {year: 2005, bip: 2325.71},
+            {year: 2006, bip: 2426.18},
+            {year: 2007, bip: 2542.22},
+            {year: 2008, bip: 2589.28},
+            {year: 2009, bip: 2493.97},
+            {year: 2010, bip: 2615.26},
+            {year: 2011, bip: 2746.91},
+            {year: 2012, bip: 2799.28},
+            {year: 2013, bip: 2866.48},
+            {year: 2014, bip: 2984.47},
+            {year: 2015, bip: 3087.03},
+            {year: 2016, bip: 3195.21},
+            {year: 2017, bip: 3333.11},
+            {year: 2018, bip: 3434.03},
+            {year: 2019, bip: 3537.28},
+            {year: 2020, bip: 3450.72},
+            {year: 2021, bip: 3682.34},
+            {year: 2022, bip: 3989.39},
+            {year: 2023, bip: 4219.31},
+            {year: 2024, bip: 4328.97}
         ];
 
         // Steueraufkommen, Bevölkerung und Schuldenstand
         const historicalData = [
-            {year: 1990, tax: 281, population: 79.8, debt: 538},
             {year: 1991, tax: 338, population: 80.3, debt: 600},
             {year: 1992, tax: 374, population: 80.6, debt: 686},
             {year: 1993, tax: 383, population: 81.2, debt: 770},
@@ -260,12 +258,12 @@
             {year: 2024, tax: 948, population: 83.6, debt: 2509}
         ];
 
-        // Reale Wachstumsraten BIP
+        // Reale Wachstumsraten BIP (Quelle: Destatis 81000-0001, VGRPKM - preisbereinigt, Kettenindex 2020=100)
         const realGrowthRates = [
-            0, 5.1, 1.9, -1.0, 2.4, 1.5, 0.8, 1.8, 2.0, 1.9,
-            2.9, 1.7, -0.2, -0.7, 1.2, 0.7, 3.8, 3.0, 1.0, -5.7,
-            4.2, 3.9, 0.4, 0.4, 2.2, 1.5, 2.2, 2.7, 1.0, 1.1,
-            -3.8, 3.2, 1.8, -0.3, -0.2
+            0, 2.0, -1.0, 2.6, 1.5, 1.0, 1.9, 2.1, 2.1,
+            2.9, 1.6, -0.2, -0.5, 1.2, 0.9, 3.9, 2.9, 0.9, -5.5,
+            4.1, 3.8, 0.5, 0.4, 2.2, 1.7, 2.2, 2.8, 1.1, 1.0,
+            -4.1, 3.9, 1.8, -0.9, -0.5
         ];
 
         // Berechnung der Indices
@@ -357,7 +355,7 @@
                     max: 300,
                     title: {
                         display: true,
-                        text: 'Index (1990 = 100)'
+                        text: 'Index (1991 = 100)'
                     }
                 },
                 x: {
@@ -472,7 +470,7 @@
                         max: 160,
                         title: {
                             display: true,
-                            text: 'Index (1990 = 100)'
+                            text: 'Index (1991 = 100)'
                         }
                     },
                     y1: {
@@ -548,7 +546,7 @@
                         max: 300,
                         title: {
                             display: true,
-                            text: 'Steuern-Index (1990 = 100)'
+                            text: 'Steuern-Index (1991 = 100)'
                         }
                     },
                     y1: {
@@ -562,7 +560,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Schulden-Index (1990 = 100)'
+                            text: 'Schulden-Index (1991 = 100)'
                         }
                     },
                     x: {
@@ -601,7 +599,7 @@
         document.getElementById('currentDebt').textContent = 
             Math.round(debtPerCapita2024).toLocaleString('de-DE') + ' €';
         
-        // Berechne Reale Werte in 1990er Euro (konsistent mit Index-Methodik)
+        // Berechne Reale Werte in 1991er Euro (konsistent mit Index-Methodik)
         // Verwende die gleichen Index-Werte wie in den Charts
         const bipPerCapita1990 = (nominalBIP[0].bip * 1000000000) / 
                                  (historicalData[0].population * 1000000);
@@ -624,7 +622,7 @@
         document.getElementById('realDebtPerCapita').textContent = 
             Math.round(debtPerCapita2024Real).toLocaleString('de-DE') + ' €';
         
-        document.getElementById('taxQuote1990').textContent = taxQuotes[0].toFixed(1) + '%';
+        document.getElementById('taxQuote1991').textContent = taxQuotes[0].toFixed(1) + '%';
         document.getElementById('taxQuote2024').textContent = taxQuotes[taxQuotes.length - 1].toFixed(1) + '%';
     </script>
 </body>
